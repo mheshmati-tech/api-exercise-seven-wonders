@@ -6,7 +6,13 @@ BASE_URL = "https://us1.locationiq.com/v1/search.php"
 LOCATION_IQ_KEY = ENV["API_TOKEN"]
 
 #url is the base pathway 
-#
+#depending on how the arrangement to access the API (should look at their API documentation), arrange the pathway 
+#in this case it was the auth-token, the place (search_term), then the format
+#once you access that data- retrieve data how you normally would from array and hashes 
+#need to place a raise and rescue in case the response within the request/response is not "okay"
+#reminder= what HTTParty gives back is a class object so can use .code .message, etc so investigate further 
+
+
 
 def get_location(search_term)
   query_parameters = {
