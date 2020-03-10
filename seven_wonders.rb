@@ -1,28 +1,31 @@
-require 'httparty'
-require 'dotenv'
+require "httparty"
+require "dotenv"
 Dotenv.load
 
 BASE_URL = "https://us1.locationiq.com/v1/search.php"
-LOCATION_IQ_KEY = ENV["API_KEY"]
+LOCATION_IQ_KEY = ENV["API_TOKEN"]
 
-# query_parameters = {
-#   # lat: 47.6062,
-#   # lon: 122.3321
-# }
-
+#url is the base pathway 
+#
 
 def get_location(search_term)
   query_parameters = {
-    key: LOCATION_IQ_KEY
-    q: search_term.to_s
-    format: "json"
+    key: LOCATION_IQ_KEY,
+    q: search_term.to_s,
+    format: "json",
   }
- HTTParty.get(BASE_URL, query: query_parameters)
+
+  response = HTTParty.get(BASE_URL, query: query_parameters)
+  if response.code != 200
+    raise(ArgumentError, respone["message"])
+  else
+    return { name: search_term,
+            lat: response[0]["lat"],
+            lon: response[0]["lon"] }
+  end
 end
 
-
 def find_seven_wonders
-
   seven_wonders = ["Great Pyramid of Giza", "Gardens of Babylon", "Colossus of Rhodes", "Pharos of Alexandria", "Statue of Zeus at Olympia", "Temple of Artemis", "Mausoleum at Halicarnassus"]
 
   seven_wonders_locations = []
